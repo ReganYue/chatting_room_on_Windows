@@ -82,5 +82,18 @@ int main() {
 
 		return 0;
 	}
-	printf("服务器端bind成功！\n");
+	//printf("服务器端bind成功！\n");
+
+		//5、开始监听
+	if (SOCKET_ERROR == listen(socketServer, SOMAXCONN))
+	{
+		int err = WSAGetLastError();//取错误码
+		printf("服务器监听失败错误码为：%d\n", err);
+		closesocket(socketServer);//释放
+		WSACleanup();//清理网络库
+
+		return 0;
+	}
+
+	printf("服务器端监听成功！\n");
 }
