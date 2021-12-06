@@ -14,7 +14,7 @@ SOCKET socketServer; //服务器套接字
 HANDLE mul_thread[CLIENT_MAX_NUM];	//管理线程
 int clent_num = 0;			//客户端套接字计数
 int socketClents[CLIENT_MAX_NUM];	//客户端套接字
-HANDLE g_hEvent; //对象句柄
+//HANDLE g_hEvent; //对象句柄
 DWORD WINAPI ThreadFun(LPVOID threadFunPara);	//线程执行函数
 void send_msg(char* msg, int len);			//消息发送函数
 
@@ -161,8 +161,8 @@ int main() {
 		//参数一：对象句柄
 		//参数二：超时间隔，以毫秒为单位。
 		//如果dwMilliseconds为零，则该函数会测试对象的状态并立即返回。如果dwMilliseconds是 INFINITE，则函数的超时间隔永远不会过去。
-		int err = WaitForSingleObject(g_hEvent, INFINITE);
-		if (err == WAIT_FAILED) {
+		//int err = WaitForSingleObject(g_hEvent, INFINITE);
+		/*if (err == WAIT_FAILED) {
 			printf("可能出现以下情况一个以上：系统内存不足。两个线程正在等待同一个中断事件。当前线程正在被终止。hHandle所代表的底层对象已被删除。句柄无效。");
 		}
 		else if (err == WAIT_OBJECT_0) {
@@ -170,7 +170,7 @@ int main() {
 		}
 		else if (err == WAIT_TIMEOUT) {
 			printf("超时间隔已过，并且对象的状态为无信号。");
-		}
+		}*/
 		/*
 		* 	HANDLE WINAPI CreateThread(
 			  _In_opt_  LPSECURITY_ATTRIBUTES  lpThreadAttributes,   
@@ -195,7 +195,7 @@ int main() {
 			0,		// 线程创建之后立即就可以进行调度
 			&dwThreadId);	// 返回线程的ID号
 		socketClents[clent_num++] = socketClent;
-		SetEvent(g_hEvent);				/*设置受信*/
+		//SetEvent(g_hEvent);				/*设置受信*/
 
 		printf(" %s连接成功,该线程ID为%d。\r\n", inet_ntoa(remoteAddr.sin_addr), dwThreadId);
 	}
@@ -255,7 +255,7 @@ DWORD WINAPI ThreadFun(LPVOID threadFunPara)
 		printf("群发送成功\n");
 	}
 	printf("客户端退出:%d\n", GetCurrentThreadId());
-	WaitForSingleObject(g_hEvent, INFINITE);
+	//WaitForSingleObject(g_hEvent, INFINITE);
 	//将关闭的客户端套接字删除。
 	for (i = 0; i < clent_num; i++)
 	{
@@ -275,7 +275,7 @@ DWORD WINAPI ThreadFun(LPVOID threadFunPara)
 	);
 	参数是事件对象的句柄。
 	*/
-	SetEvent(g_hEvent);
+	//SetEvent(g_hEvent);
 	
 	// 关闭同客户端的连接
 	closesocket(socketClent);
@@ -292,7 +292,7 @@ void send_msg(char* msg, int len)
 	//参数一：对象句柄
 	//参数二：超时间隔，以毫秒为单位。
 	//如果dwMilliseconds为零，则该函数会测试对象的状态并立即返回。如果dwMilliseconds是 INFINITE，则函数的超时间隔永远不会过去。
-	WaitForSingleObject(g_hEvent, INFINITE);
+	//WaitForSingleObject(g_hEvent, INFINITE);
 	//给每个客户端套接字发送消息
 	for (i = 0; i < clent_num; i++) {
 		send(socketClents[i], msg, len, 0);
@@ -304,6 +304,6 @@ void send_msg(char* msg, int len)
 	);
 	参数是事件对象的句柄。
 	*/
-	SetEvent(g_hEvent);	
+	//SetEvent(g_hEvent);	
 }
 
