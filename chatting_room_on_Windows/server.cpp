@@ -171,6 +171,8 @@ int main() {
 		else if (err == WAIT_TIMEOUT) {
 			printf("超时间隔已过，并且对象的状态为无信号。");
 		}*/
+
+
 		/*
 		* 	HANDLE WINAPI CreateThread(
 			  _In_opt_  LPSECURITY_ATTRIBUTES  lpThreadAttributes,   
