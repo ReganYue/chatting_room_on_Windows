@@ -50,4 +50,24 @@ int main() {
 		return 0;
 	}
 	//printf("版本校验成功！\n");
+
+	// 3、创建SOCKET
+	SOCKET socketServer = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	if (INVALID_SOCKET == socketServer)
+	{
+		int err = WSAGetLastError();
+		printf("服务器创建SOCKET失败错误码为：%d\n", err);
+
+		//清理网络库，不关闭句柄
+		WSACleanup();
+		return 0;
+	}
+	printf("服务器创建SOCKET成功！\n");
+
+	struct sockaddr_in si;
+	si.sin_family = AF_INET;
+	si.sin_port = htons(PORT);//用htons宏将整型转为端口号的无符号整型
+
+	si.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
 }
