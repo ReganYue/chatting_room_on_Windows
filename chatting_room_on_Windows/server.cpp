@@ -6,6 +6,8 @@
 #pragma comment(lib, "Ws2_32.lib")
 //设置占用的端口
 #define PORT 12345
+//设置客户端的最大数量
+#define CLIENT_MAX_NUM 128
 
 int main() {
 	//1、打开网络库
@@ -85,7 +87,7 @@ int main() {
 	//printf("服务器端bind成功！\n");
 
 		//5、开始监听
-	if (SOCKET_ERROR == listen(socketServer, SOMAXCONN))
+	if (SOCKET_ERROR == listen(socketServer, CLIENT_MAX_NUM))
 	{
 		int err = WSAGetLastError();//取错误码
 		printf("服务器监听失败错误码为：%d\n", err);
@@ -95,5 +97,5 @@ int main() {
 		return 0;
 	}
 
-	printf("服务器端监听成功！\n");
+	//printf("服务器端监听成功！\n");
 }
