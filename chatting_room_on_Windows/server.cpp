@@ -63,11 +63,24 @@ int main() {
 		WSACleanup();
 		return 0;
 	}
-	printf("服务器创建SOCKET成功！\n");
+	//printf("服务器创建SOCKET成功！\n");
 
 	struct sockaddr_in si;
 	si.sin_family = AF_INET;
 	si.sin_port = htons(PORT);//用htons宏将整型转为端口号的无符号整型
 
 	si.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+
+
+	//4、绑定地址与端口
+	if (SOCKET_ERROR == bind(socketServer, (const struct sockaddr*)&si, sizeof(si)))
+	{
+		int err = WSAGetLastError();//取错误码
+		printf("服务器bind失败错误码为：%d\n", err);
+		closesocket(socketServer);//释放
+		WSACleanup();//清理网络库
+
+		return 0;
+	}
+	printf("服务器端bind成功！\n");
 }
